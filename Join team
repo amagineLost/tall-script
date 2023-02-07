@@ -1,0 +1,16 @@
+local player = game.Players.LocalPlayer
+local character = player.Character
+local humanoid = character:WaitForChild("Humanoid")
+local chat = game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest
+
+player.Chatted:Connect(function(message)
+  local text = message:match(".join%s+(%w+)")
+  if text then
+    for i,v in pairs(game.Workspace.Teams:GetChildren()) do
+      if string.find(v.Name, text) then
+        game:GetService("ReplicatedStorage").acceptedEvent:FireServer(v.Name)
+        break
+      end
+    end
+  end
+end)
